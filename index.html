@@ -1,0 +1,501 @@
+<!doctype html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+	<meta name="description" content="Gestion des .d.ts Typescript 2.0">
+	<meta name="author" content="Félix Billon">
+
+	<title>TypeScript + GraphQl =
+		<3</title>
+
+			<link rel="stylesheet" href="css/reveal.css">
+			<link rel="stylesheet" href="css/theme/dcube.css" id="theme">
+			<link rel="stylesheet" href="css/animate.css">
+			<link rel="stylesheet" href="css/font-awesome/css/font-awesome.min.css">
+
+			<!-- Theme used for syntax highlighting of code -->
+			<link rel="stylesheet" href="plugin/highlightMaster/styles/monokai-sublime.css">
+
+			<!-- Title-Footer plugin -->
+			<link rel="stylesheet" href="plugin/title-footer/title-footer.css">
+
+			<!-- Printing and PDF exports -->
+			<script>
+				var link = document.createElement('link');
+				link.rel = 'stylesheet';
+				link.type = 'text/css';
+				link.href = window.location.search.match(/print-pdf/gi) ? 'css/print/pdf.css' : 'css/print/paper.css';
+				document.getElementsByTagName('head')[0].appendChild(link);
+			</script>
+
+			<style>
+				.reveal .slides section .fragment.current-only {
+					opacity: 1;
+					visibility: visible;
+					display: none;
+				}
+
+				.reveal .slides section .fragment.current-only.current-fragment {
+					display: block;
+				}
+
+				/* Solarized Light theme */
+
+				.line {
+					display: block;
+				}
+
+				.line.focus {
+					background: #fdf6e3;
+					color: #657b83;
+				}
+
+				.line.focus .hljs-comment,
+				.line.focus .hljs-quote {
+					color: #93a1a1;
+				}
+
+				.line.focus .hljs-keyword,
+				.line.focus .hljs-selector-tag,
+				.line.focus .hljs-addition {
+					color: #859900;
+				}
+
+				.line.focus .hljs-number,
+				.line.focus .hljs-string,
+				.line.focus .hljs-meta .hljs-meta-string,
+				.line.focus .hljs-literal,
+				.line.focus .hljs-doctag,
+				.line.focus .hljs-regexp {
+					color: #2aa198;
+				}
+
+				.line.focus .hljs-title,
+				.line.focus .hljs-section,
+				.line.focus .hljs-name,
+				.line.focus .hljs-selector-id,
+				.line.focus .hljs-selector-class {
+					color: #268bd2;
+				}
+
+				.line.focus .hljs-attribute,
+				.line.focus .hljs-attr,
+				.line.focus .hljs-variable,
+				.line.focus .hljs-template-variable,
+				.line.focus .hljs-class .hljs-title,
+				.line.focus .hljs-type {
+					color: #b58900;
+				}
+
+				.line.focus .hljs-symbol,
+				.line.focus .hljs-bullet,
+				.line.focus .hljs-subst,
+				.line.focus .hljs-meta,
+				.line.focus .hljs-meta .hljs-keyword,
+				.line.focus .hljs-selector-attr,
+				.line.focus .hljs-selector-pseudo,
+				.line.focus .hljs-link {
+					color: #cb4b16;
+				}
+
+				.line.focus .hljs-built_in,
+				.line.focus .hljs-deletion {
+					color: #dc322f;
+				}
+
+				.line.focus .hljs-formula {
+					background: #eee8d5;
+				}
+
+				.line.focus .hljs-emphasis {
+					font-style: italic;
+				}
+
+				.line.focus .hljs-strong {
+					font-weight: bold;
+				}
+
+				.yellow-slide .line.focus:nth-child(1),
+				.yellow-slide .line.focus:nth-child(2) {
+					background: yellow;
+				}
+
+				table.ideList {
+					border-spacing: 80px;
+					border-collapse: separate;
+				}
+
+				table.ideList tbody tr td {
+					border: none;
+				}
+
+				table.toolList td img {
+					border: none;
+					margin: 0px;
+					width: 200px;
+				}
+
+				table.ideList td img {
+					border: none;
+					margin: 0px;
+					width: 150px;
+				}
+
+				table.ideList td figcaption {
+					text-align: center;
+				}
+			</style>
+</head>
+
+<body>
+	<div class="reveal">
+
+		<!-- ====================== BETWEEN REVEAL AND SLIDES ====================== -->
+		<header class="left" style="position: absolute; left: 0px;width: 10%;">
+			<img src="./img/logoDcube.jpg" />
+		</header>
+		<!-- ====================== BETWEEN REVEAL AND SLIDES ====================== -->
+
+		<div class="slides">
+			<section>
+				<h2 class="animated pulse infinite">Coolest TypeScript features you may have missed</h2>
+				<p>
+					<small>Par Félix Billon</small>
+				</p>
+			</section>
+			<section>
+				<h2>Qui suis-je ?</h2>
+				<ul>
+					<li class="fragment roll-in">Développeur web orienté front-end chez Dcube.</li>
+					<img class="fragment roll-in" style="width:20%;margin:0;margin-top:3%;margin-right: 12%;margin-bottom: 5%;" src="./img/Logo3.jpg"
+					/>
+					<img class="fragment roll-in" style="width:20%;margin:0;margin-top:3%;margin-right: 12%;margin-bottom: 5%;" src="./img/aos.png"
+					/>
+					<img class="fragment roll-in" style="width:20%;margin:0;margin-top:3%;margin-bottom: 5%;" src="./img/bow.jpeg" />
+					<li class="fragment roll-in">Blog dev web : shakedatcode.com</li>
+					<li class="fragment roll-in">
+						<img style="width:5%;border:none;margin:0;margin-top:3%;" src="./img/twitter.png" /> @felix_billon</li>
+				</ul>
+			</section>
+			<section>
+				<h2>Sommaire</h2>
+				<ol>
+					<!-- <li class="fragment roll-in">Proposition ECMAScript stage 3</li> -->
+					<li class="fragment roll-in">Option strict true</li>
+				</ol>
+			</section>
+			<!-- <section>
+				<section>
+					<h2>Optional catch binding (TS 2.5)</h2>
+					<ul>
+						<li class="fragment roll-in">Utile pour :
+							<ul>
+								<li class="fragment roll-in">complètement ignorer une exception</li>
+								<li class="fragment roll-in">ne pas réagir face à une exception connue</li>
+							</ul>
+						</li>
+					</ul>
+					<pre class="fragment roll-in"><code data-trim data-noescape>
+// détéction de features
+let supported;
+try {
+   useTheFeature();
+   supported = true;
+} catch {
+   supported = false;
+}
+						</code></pre>
+					<pre class="fragment roll-in"><code data-trim data-noescape>
+// assert.throws() (NodeJS API)
+function throws(func) {
+   try {
+      func();
+   } catch {
+      return;
+   }
+   throw new Error('Function didn’t throw an exception!');
+}
+													</code></pre>
+				</section>
+				<section>
+					<h2>Numeric separators (TS 2.7)</h2>
+					<ul>
+						<li class="fragment roll-in">Existe en Java, C#, C++,...</li>
+						<li class="fragment roll-in">Objectif -> rendre les expressions numériques plus lisibles</li>
+					</ul>
+					<pre class="fragment roll-in"><code data-trim data-noescape>
+const milion = 1_000_000;
+const phone = 555_734_2231;
+const bytes = 0xFF_0C_00_FF;
+const word = 0b1100_0011_1101_0001;
+						</code></pre>
+				</section>
+			</section> -->
+			<section>
+				<section>
+					<h2>Option strict (TS 2.3)</h2>
+					<ul>
+						<li class="fragment roll-in">Option maître qui active plusieurs options</li>
+						<li class="fragment roll-in">Non activée par défaut (sauf si utilisation de tsc --init)</li>
+						<li class="fragment roll-in">Possibilité d'overrider une par une les options</li>
+						<li class="fragment roll-in">Active :
+							<ul>
+								<li class="fragment roll-in">--noImplicitAny</li>
+								<li class="fragment roll-in">--noImplicitThis</li>
+								<li class="fragment roll-in">--alwaysStrict</li>
+								<li class="fragment roll-in">--strictNullChecks</li>
+								<li class="fragment roll-in">--strictFunctionTypes</li>
+								<li class="fragment roll-in">--strictPropertyInitialization</li>
+							</ul>
+						</li>
+					</ul>
+				</section>
+				<section>
+					<h2>--noImplicitAny</h2>
+					<ul>
+						<li class="fragment roll-in">Any par défaut si :
+							<ul>
+								<li class="fragment roll-in">TypeScript ne peut inférer le type</li>
+								<li class="fragment roll-in">Le type n'est pas précisé</li>
+							</ul>
+						</li>
+					</ul>
+					<pre class="fragment roll-in"><code data-trim data-noescape>
+function fn(someArg) { // ERROR : Parameter 'someArg' implicitly has an 'any' type.
+   //...
+}					
+					</code></pre>
+					<pre class="fragment roll-in"><code data-trim data-noescape>					
+function fn(someArg: any) {
+   //...
+}
+					</code></pre>
+					<pre class="fragment roll-in"><code data-trim data-noescape>								
+let key = 'secondKey';
+let secondValue: string = someObject[key]; // ERROR : Element implicitly has an 'any' type because type 'ISomeObject' has no index signature.
+					</code></pre>
+					<pre class="fragment roll-in"><code data-trim data-noescape>								
+let key: (keyof ISomeObject) = 'secondKey';
+let secondValue: string = someObject[key];
+					</code></pre>
+				</section>
+				<section>
+					<h2>--noImplicitThis (TS 2.0)</h2>
+					<ul>
+						<li class="fragment roll-in">Catch les utilisations de this potentiellement dangereuse.</li>
+					</ul>
+					<pre class="fragment roll-in"><code data-trim data-noescape>
+let farms = {
+   animals: ["chicken", "cow", "rabbit"],
+   createGroup: function() {
+      return function() {
+         return { group: this.animals }; // ERROR : 'this' implicitly has type 'any' because it does not have a type annotation.
+      }
+   }
+}
+						</code></pre>
+					<pre class="fragment roll-in"><code data-trim data-noescape>
+let farms = {
+   animals: ["chicken", "cow", "rabbit"],
+   createGroup: function() {
+      return () => (
+         { group: this.animals }
+      )
+   }
+}
+						</code></pre>
+					<pre class="fragment roll-in"><code data-trim data-noescape>	
+function f(this: void) {
+   // 'this' est inutilisable ici
+}
+						</code></pre>
+				</section>
+				<section>
+					<h2>--alwaysStrict (TS 2.1)</h2>
+					<ul>
+						<li class="fragment roll-in">Met "use strict"; au dessus de chaque fichier générer.</li>
+						<li class="fragment roll-in">Depuis ES2015 les classes et modules sont toujours en strict mode.</li>
+					</ul>
+				</section>
+				<section>
+					<h2>--strictNullChecks (TS 2.0)</h2>
+					<img class="fragment roll-in" style="border:none;margin:0;box-shadow:none;width: 600px;" src="./img/strictNullCheck1.png"
+					/>
+					<pre class="fragment roll-in"><code data-trim data-noescape>	
+let foo: string;
+foo = "Test";      // OK
+foo = null;        // OK
+foo = undefined;   // OK
+					</code></pre>
+					<pre class="fragment roll-in"><code data-trim data-noescape>	
+let foo: string;
+foo = "Test";      // OK
+foo = null;        // ERROR
+foo = undefined;   // ERROR
+
+let bar: string | null;
+bar = "Test";      // OK
+bar = null;        // OK
+bar = undefined;   // ERROR
+					</code></pre>
+				</section>
+				<section>
+					<h3>Invariance/Covariance/Contravariance/Bivariance</h3>
+					<pre class="fragment roll-in"><code data-trim data-noescape>	
+class Animals {}
+class Dog extends Animals {}
+class Bulldog extends Dog {}
+					</code></pre>
+					<pre class="fragment roll-in"><code data-trim data-noescape>	
+// Invariance : accepte ni les sous-classes ni les classes mère
+function method(value: Invariant&lsaquo;Dog&rsaquo;) {...}
+method(new Animals());  // ERROR
+method(new Dog());      // OK
+method(new Bulldog());  // ERROR
+					</code></pre>
+					<pre class="fragment roll-in"><code data-trim data-noescape>	
+// Covariance : accepte les sous-classes					
+function method(value: Covariant&lsaquo;Dog&rsaquo;) {...}
+method(new Animals());  // ERROR
+method(new Dog());      // OK
+method(new Bulldog());  // OK
+					</code></pre>
+					<pre class="fragment roll-in"><code data-trim data-noescape>	
+// Contravariance : accepte les classe mère
+function method(value: Contravariant&lsaquo;Dog&rsaquo;) {...}
+method(new Animals());  // OK
+method(new Dog());      // OK
+method(new Bulldog());  // ERROR
+					</code></pre>
+					<pre class="fragment roll-in"><code data-trim data-noescape>	
+// Bivariance : accepte les sous-classes et les classes mères
+function method(value: Bivariant&lsaquo;Dog&rsaquo;) {...}
+method(new Animals());  // OK
+method(new Dog());      // OK
+method(new Bulldog());  // OK
+					</code></pre>
+				</section>
+				<section>
+					<h2>Check des types input/output</h2>
+					<pre class="fragment roll-in"><code data-trim data-noescape>	
+class BaseClass {
+   method(value: Dog): Dog { }
+}
+
+class SubClass extends BaseClass {
+   method(value: Dog): Dog { }
+}
+						</code></pre>
+					<p class="fragment roll-in">Ouput :</p>
+					<pre class="fragment roll-in"><code data-trim data-noescape>	
+class SubClass extends BaseClass {
+   method(value: Dog): Bulldog { }
+}
+						</code></pre>
+					<pre class="fragment roll-in"><code data-trim data-noescape>	
+class SubClass extends BaseClass {
+   method(value: Dog): Animals { } // DANGER !
+}
+						</code></pre>
+					<p class="fragment roll-in">Input :</p>
+					<pre class="fragment roll-in"><code data-trim data-noescape>	
+class SubClass extends BaseClass {
+   method(value: Animals): Dog { }
+}
+						</code></pre>
+					<pre class="fragment roll-in"><code data-trim data-noescape>	
+class SubClass extends BaseClass {
+   method(value: Bulldog): Dog { } // DANGER !
+}
+						</code></pre>
+				</section>
+				<section>
+					<h2>--strictFunctionTypes (TS 2.6)</h2>
+					<ul>
+						<li class="fragment roll-in">Check les paramètres de fonction de façon contravariant</li>
+						<li class="fragment roll-in">Ne s'applique pas aux méthodes, ni aux constructeurs</li>
+					</ul>
+					<pre class="fragment roll-in"><code data-trim data-noescape>	
+function trainDog(d: Dog) { };
+function cloneAnimal(source: Animal, done: (result: Animal) => void): void {  };
+let c = new Cat();
+							
+cloneAnimal(c, trainDog); // ERROR si --strictFunctionTypes activé
+												</code></pre>
+					<pre class="fragment roll-in"><code data-trim data-noescape>	
+function makeLowerCase(s: string) {
+   return s.toLowerCase();
+}
+							
+declare let foo: Promise&lsaquo;string | number&rsaquo;;
+foo.then(makeLowerCase); // ERROR si --strictFunctionTypes activé
+					</code></pre>
+				</section>
+				<section>
+					<h2>--strictPropertyInitialization (TS 2.7)</h2>
+					<ul>
+						<li class="fragment roll-in">Forçe l'initialisation des membres d'une classes.</li>
+					</ul>
+					<pre class="fragment roll-in"><code data-trim data-noescape>	
+class C {
+   foo: number;
+   bar = "hello";
+   baz: boolean; // ERROR
+
+   constructor() {
+      this.foo = 42;
+   }
+}
+					</code></pre>
+					<ul>
+						<li class="fragment roll-in">Utiliser l'opérateur 'definite assignment assertion' pour affirmer votre initilisation</li>
+					</ul>
+					<pre class="fragment roll-in"><code data-trim data-noescape>	
+class C {
+   foo!: number; // &lsaquo;-- definite assignment assertion
+							
+   constructor() {}
+
+   onInit() {
+      this.foo = 10;
+   }
+}
+												</code></pre>
+				</section>
+			</section>
+			<section>
+				<h2 class="animated tada infinite">Merci</h2>
+			</section>
+		</div>
+	</div>
+
+	<script src="lib/js/head.min.js"></script>
+	<script src="js/reveal.js"></script>
+
+	<script>
+		// More info https://github.com/hakimel/reveal.js#configuration
+		Reveal.initialize({
+			history: true,
+
+			// More info https://github.com/hakimel/reveal.js#dependencies
+			dependencies: [
+				{ src: 'plugin/markdown/marked.js' },
+				{ src: 'plugin/markdown/markdown.js' },
+				{ src: 'plugin/notes/notes.js', async: true },
+				{ src: 'plugin/highlightMaster/highlight.pack.js' },
+				// Zoom in and out with Alt+click
+				{ src: 'plugin/zoom-js/zoom.js', async: true },
+				// Title-Footer plugin
+				{ src: 'plugin/title-footer/title-footer.js', async: true, callback: function () { title_footer.initialize(); } },
+				// CodeFocus
+				{ src: 'plugin/reveal-code-focus/reveal-code-focus.js', async: true, callback: function () { RevealCodeFocus(); } }
+			]
+		});
+	</script>
+
+</body>
+
+</html>
